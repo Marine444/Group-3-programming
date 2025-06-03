@@ -17,7 +17,7 @@ require(tidyverse)
 
 # Title Page
 
-Include your names Marine Latour
+Include your names Marine Latour, Bryan Berijn
 
 Include the tutorial group number
 
