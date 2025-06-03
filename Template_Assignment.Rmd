@@ -1,5 +1,5 @@
 ---
-title: "housing crisiiis"
+title: "housing crisis"
 author: "Studentnames and studentnumbers here"
 date: "`r Sys.Date()`"
 output: pdf_document
