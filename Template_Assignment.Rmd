@@ -1,6 +1,7 @@
 ---
-title: "housing crisis"
-author: "Studentnames and studentnumbers here"
+title: "2008 financial crisis in US and its impact on median income and housing prices."
+author: "Studentnames and studentnumbers here Marine Latour, Bryan Berlijn, Toine van Bakel, Tyfarah Wedervoort, Shruti Ramasamy, Naomi van Leuvensteijn, Rocco vitale
+"
 date: "`r Sys.Date()`"
 output: pdf_document
 ---
@@ -17,7 +18,7 @@ require(tidyverse)
 
 # Title Page
 
-Include your names Marine Latour, Bryan Berlijn, Toine van Bakel
+Include your names: Marine Latour, Bryan Berlijn, Toine van Bakel, Tyfarah Wedervoort, Shruti Ramasamy, Naomi van Leuvensteijn, Rocco vitale
 
 Include the tutorial group number
 
