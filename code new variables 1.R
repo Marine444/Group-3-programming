@@ -30,6 +30,9 @@ merge_2 <- merge_2 %>%
   ungroup()
 
 
+write.csv(merge_2, "merge_2.csv")
+
+
 write.csv(merge_2,"merge_2.csv")
 
 merge_2 <- merge_2 %>%
