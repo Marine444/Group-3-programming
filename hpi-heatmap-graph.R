@@ -1,6 +1,6 @@
 install.packages(c("ggplot2", "dplyr", "sf", "tigris", "viridis"))
 
-# 📦 Packages
+# Packages
 library(readr)
 library(dplyr)
 library(ggplot2)
@@ -27,7 +27,7 @@ merge_2 <- merge_2 %>%
   left_join(state_abbr, by = "State")
 
 
-# 🗺 US shapefile ophalen en filteren
+# US shapefile ophalen en filteren
 states_sf <- states(cb = TRUE) %>%
   filter(!STUSPS %in% c("PR", "VI", "GU", "MP", "AS")) %>%
   st_transform(crs = 5070)
