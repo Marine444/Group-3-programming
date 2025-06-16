@@ -44,7 +44,7 @@ ggplot(map_data_2006) +
   scale_fill_viridis(option = "plasma", na.value = "grey90") +
   theme_minimal(base_size = 14) +
   labs(
-    title = "House Price Index per Staat - 2006",
+    title = "House Price $ Index per state - 2006",
     fill = "HPI (Index)"
   ) +
   theme(
