@@ -53,6 +53,6 @@ ggplot(map_data_2006) +
   )
 
 
-  
+ggsave("map_2006.png", width = 10, height = 8, dpi = 300)
 
 
