@@ -1,7 +1,8 @@
 install.packages("tidyverse")
 library(tidyverse)
+library(ggplot2)
 
-data <- read.csv("merge_2.csv")
+data = merge_2
 
 # Herbenoem kolommen als dat nodig is
 colnames(data) <- make.names(colnames(data))
@@ -41,12 +42,6 @@ top_states <- c("California", "Texas", "New York", "Florida", "Illinois")
 filtered_data <- plot_data %>%
   filter(State %in% top_states)
 
-ggplot() +
-  geom_line(data = filtered_data, aes(x = Year, y = price_to_income_ratio, color = State), size = 1.2) +
-  geom_line(data = average_data, aes(x = Year, y = avg_ratio), color = "black", size = 1.3, linetype = "dashed") +
-  labs(title = "Price-to-Income Ratio per State (met Gemiddelde)",
-       x = "Jaar", y = "Price-to-Income Ratio") +
-  theme_minimal()
 
 ggplot() +
   geom_line(data = filtered_data, aes(x = Year, y = price_to_income_ratio, color = State), size = 1.2) +
@@ -54,8 +49,11 @@ ggplot() +
   scale_color_manual(values = c("California" = "blue", "Texas" = "green", "New York" = "red",
                                 "Florida" = "purple", "Illinois" = "orange", "Mean" = "black")) +
   labs(title = "Price-to-Income Ratio per State with National mean",
-       x = "year", y = "Ratio", color = "State") +
-  theme_minimal()
+       x = "Year", y = "Ratio", color = "State") +
+  theme_minimal() +
+  geom_vline(xintercept = 2008, linetype = "solid", color = "black") +
+  annotate("text" , x= 2008.7 , y = 22, size = 4.5, label = "Financial crisis\nhit")
+
 
 
 ggsave("Temporal_Visualization.png", width = 10, height = 6)
