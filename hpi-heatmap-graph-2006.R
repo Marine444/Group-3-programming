@@ -48,8 +48,8 @@ ggplot(map_data_2006) +
   scale_fill_viridis(option = "plasma", na.value = "grey90", limits = c(hpi_min, hpi_max)) +
   theme_minimal(base_size = 14) +
   labs(
-    title = "House Price $ Index per state - 2006",
-    fill = "HPI (Index)"
+    title = "House Price Index per state in US dollar ($) - 2006",
+    fill = "Housing Price \nIndex (HPI)"
   ) +
   theme(
     legend.position = "right",
@@ -67,8 +67,8 @@ ggplot(map_data_2010) +
   scale_fill_viridis(option = "plasma", na.value = "grey90", limits = c(hpi_min, hpi_max)) +
   theme_minimal(base_size = 14) +
   labs(
-    title = "House Price $ Index per state - 2010",
-    fill = "HPI (Index)"
+    title = "House Price Index per state in US dollar ($) - 2010",
+    fill = "Housing Price \nIndex (HPI)"
   ) +
   theme(
     legend.position = "right",
