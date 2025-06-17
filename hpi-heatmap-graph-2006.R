@@ -35,13 +35,17 @@ states_sf <- states(cb = TRUE) %>%
 # Merge shapefile en je data (alle jaren)
 map_data <- left_join(states_sf, merge_2, by = "STUSPS")
 
+#setting the limits for the scale of the heat map
+hpi_min <- min(map_data$HPI, na.rm = TRUE)
+hpi_max <- max(map_data$HPI, na.rm = TRUE)
+
 # Filter voor 2006
 map_data_2006 <- map_data %>% filter(Year == 2006)
 
 # Plot 2006
 ggplot(map_data_2006) +
   geom_sf(aes(fill = HPI), color = "white", size = 0.2) +
-  scale_fill_viridis(option = "plasma", na.value = "grey90") +
+  scale_fill_viridis(option = "plasma", na.value = "grey90", limits = c(hpi_min, hpi_max)) +
   theme_minimal(base_size = 14) +
   labs(
     title = "House Price $ Index per state - 2006",
@@ -53,6 +57,23 @@ ggplot(map_data_2006) +
   )
 
 
-  
+ggsave("map_2006.png", width = 10, height = 8, dpi = 300)
+
+map_data_2010 <- map_data %>% filter(Year == 2010)
+
+# Plot 2010
+ggplot(map_data_2010) +
+  geom_sf(aes(fill = HPI), color = "white", size = 0.2) +
+  scale_fill_viridis(option = "plasma", na.value = "grey90", limits = c(hpi_min, hpi_max)) +
+  theme_minimal(base_size = 14) +
+  labs(
+    title = "House Price $ Index per state - 2010",
+    fill = "HPI (Index)"
+  ) +
+  theme(
+    legend.position = "right",
+    legend.title = element_text(size = 12)
+  )
 
 
+ggsave("map_2010.png", width = 10, height = 8, dpi = 300)

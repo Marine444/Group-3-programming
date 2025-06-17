@@ -51,3 +51,5 @@ ggplot(map_data_2010) +
     legend.position = "right",
     legend.title = element_text(size = 12)
   )
+
+ggsave("map_2010.png", width = 10, height = 8, dpi = 300)
