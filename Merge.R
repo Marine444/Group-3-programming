@@ -31,5 +31,5 @@ income_long_no_NA$State = income_long_no_NA$State %>%
 hpi_filtered$Year = as.numeric(hpi_filtered$Year)
 income_long_no_NA$Year = as.numeric(income_long_no_NA$Year)
 #merging the 2 data sets
-merge_4 = inner_join(hpi_filtered , income_long_no_NA, by = c("State","Year"))
+merge_2 = inner_join(hpi_filtered , income_long_no_NA, by = c("State","Year"))
 
