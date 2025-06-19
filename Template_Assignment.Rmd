@@ -9,32 +9,44 @@ output: pdf_document
 # Set-up your environment
 
 ```{r package_install, include=FALSE}
-install.packages("tidyverse")
+install.packages(c("ggplot2","tidyverse", "dplyr", "sf", "tigris", "viridis"))
 ```
 
 ```{r packages}
-require(tidyverse)
+library(tidyverse)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(viridis)
+library(tigris)
+library(sf)
 ```
 
 # Title Page
 
-Include your names: Marine Latour, Bryan Berlijn, Toine van Bakel, Tyfarah Wedervoort, Shruti Ramasamy, Naomi van Leuvensteijn, Rocco vitale
+Include your names = "Marine Latour, Bryan Berlijn, Toine van Bakel, Tyfarah Wedervoort, Shruti Ramasamy, Naomi van Leuvensteijn, Rocco vitale"
 
 Include the tutorial group number
 
 Include your tutorial lecturer's name
 
-# Part 1 - Identify a Social Problem
+# Part 1: Problem Motivation & Literature
 
-Use APA referencing throughout your document.
+## 1.1: Why was the 2008 Financial Crisis in the US a Social Problem?
 
-## 1.1 Describe the Social Problem
+The 2008 Financial Crisis, commonly referred to as the Great Recession, was a major social problem due to its severe effects on median household income and housing prices, which significantly undermined economic security for millions of Americans. The crisis was mainly caused by excessive household leverage, particularly within the subprime mortgage sector, which triggered a steep decline in housing prices and a wave of mortgage defaults (Mian & Sufi, 2010a). The housing market collapse diminished household wealth and reduced consumer spending, intensifying the recession’s severity and duration.
+Mian and Sufi (2010a) demonstrate that households with higher leverage before the crisis faced substantially greater financial distress, leading to sharp reductions in durable consumption and higher unemployment rates at the county level. Furthermore, Morrissey et al. (2020) show that during the Great Recession, households with lower education levels, children, or without homeownership experienced significantly higher income and employment instability, an effect closely linked to increased financial hardship (pp. 3–4). Together, these economic and social disruptions illustrate why the Great Recession was not only a financial crisis but also a profound social crisis, affecting housing security, income stability, and overall well-being.
 
-Include the following:
+## 1.2: What sources have identified this topic as a social problem?
 
--   Why is this relevant?
+Several peer-reviewed studies have recognized the 2008 Financial Crisis as a critical social problem. Mian and Sufi’s research (2010a, 2010b) emphasizes the role of household leverage and its consequences on the broader economy and local communities, highlighting the direct connection between financial market failures and deteriorating social conditions such as unemployment and poverty. Morrissey et al. (2020) extend this understanding by detailing how economic instability disproportionately affected vulnerable groups, including less-educated households and renters, thereby exacerbating social inequality during the recession.
 
--   ...
+## 1.3: Has a part of this topic not been researched yet?
+While extensive research has analyzed household leverage, foreclosures, unemployment, and macroeconomic impacts of the 2008 financial crisis such as by Mian & Sufi, 2010a, 2010b, Morrissey et al., 2020), less academic focus has been placed on the geographic variation in how the relationship between housing price shifts and median income evolved across states during the crisis. What remained unexplored is quantitatively assessing how differently these two indicators interacted on a state-by-state basis, thus creating regional disparities.
+
+##1.4: How does the report bring new perspective on the topic?
+
+This report creates a merged, state-level dataset to analyze income and housing prices together. Also, the following analysis will highlight where there was a lack of alignment between housing prices and income levels. Moreover, this report will visualize the regional variation in housing and income trends using plots and correlations.
 
 # Part 2 - Data Sourcing
 
