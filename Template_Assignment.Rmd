@@ -1,6 +1,6 @@
 ---
 title: "2008 financial crisis in US and its impact on median income and housing prices."
-author: " Bryan Berlijn (284091), Marine Latour (2853681),Naomi van Leuvensteijn (2813993),Rocco vitale(2860249), Shruti Ramasamy (2771013) Toine van Bakel(2854665), Tyfarah Wedervoort (2849888)
+author: " Bryan Berlijn (284091), Marine Latour (2853681),Naomi van Leuvensteijn (2813993),Rocco vitale(2860249), Shruti Ramasamy (2771013), Toine van Bakel(2854665), Tyfarah Wedervoort (2849888)
 "
 date: "`r Sys.Date()`"
 output: pdf_document
@@ -20,6 +20,7 @@ library(ggplot2)
 library(viridis)
 library(tigris)
 library(sf)
+library(readxl)
 ```
 
 # Title Page
@@ -56,9 +57,15 @@ This report creates a merged, state-level dataset to analyze income and housing 
 
 Preferably from a URL, but if not, make sure to download the data and store it in a shared location that you can load the data in from. Do not store the data in a folder you include in the Github repository!
 
+Dataset 1, HPI : hpi_data_set = <https://www.fhfa.gov/hpi/download/annual/hpi_at_state.xlsx>
+
+Dataset 2: Median income = <https://nces.ed.gov/programs/digest/d11/tables/xls/tabn025.xls>
+
 ```{r loading_data}
-hpi_data_set = https://www.fhfa.gov/hpi/download/annual/hpi_at_state.xlsx
-income_per_state = https://nces.ed.gov/programs/digest/d11/tables/xls/tabn025.xls
+
+hpi_at_state = read_xlsx("hpi_at_state.xlsx")
+
+tabn025 = read_xls("tabn025.xls")
 ```
 
 ## 2.2 Provide a short summary of the dataset(s)
@@ -242,7 +249,7 @@ merge_2 <- merge_2 %>%
 
 This link explains the wealth effect and how falling property value led to lower spending and thus lower incomes. 
 
-**Link between income value and house price:** link between housing price change (HPIt-HPIt-1 ) and income value change (Incomet-Incomet-1 ) , where t= year. 
+**Link between income value and house price:** link between housing price change (HPI~t~-HPI~t-1~ ) and income value change (Income~t~-Income~t-1~ ) , where t= year. 
 
 **Why the creation of this variable is informative and useful for your analyses?** 
 
@@ -601,3 +608,51 @@ Our analysis of the 2008 financial crisis shows that pre-crisis the house prices
 Public Repository Link : <https://github.com/Marine444/Group-3-programming>
 
 ## 5.2 Reference list
+
+1.  MIAN, A., & SUFI, A. (2010). Household Leverage and the Recession of 2007-09. *IMF Economic Review, 58(1)* , p.74–117. <https://www.jstor.org/stable/25762071>  
+
+2.  Mian, A., & Sufi, A. (2010b). The Great Recession: Lessons from Microeconomic Data. *The American Economic Review, 100(2)*, p.51–56. <https://doi.org/10.1257/aer.100.2.51>  
+
+<!-- -->
+
+3.  Morrissey, T. W., Cha, Y., Wolf, S., & Khan, M. (2020). Household economic instability: Constructs, measurement, and implications. *Children and Youth Services Review,* 118. <https://doi.org/10.1016/j.childyouth.2020.105502>  
+
+<!-- -->
+
+4.  National Center for Education Statistics. (2011). *Median household income, by state: Selected years, 1990 through 2010.* <https://nces.ed.gov/programs/digest/d11/tables/dt11_025.asp> 
+
+5.   National Center for Education Statistics. (n.d.). *National Center for Education Statistics (NCES).* <https://nces.ed.gov/> 
+
+<!-- -->
+
+6.  U.S. Federal Housing. (2025). *“HPI for states (All – Transactions Index): Experimental Indexes Showing Cumulative (Nominal) Annual Appreciation”.*   <https://www.fhfa.gov/hpi/download/annual/hpi_at_state.xlsx> 
+
+"
+
+```{r}
+setwd("C:/Users/tyfar/OneDrive/Desktop/school/programming/Group-3-programming")
+
+```
+
+```{r}
+install.packages(c("renv", "tinytex"))
+
+# 1. restore the exact package versions used by the course
+renv::restore()        # looks at renv.lock
+
+# 2. check whether a LaTeX compiler is already present
+has_tex <- tinytex::is_tinytex() || nzchar(Sys.which("pdflatex"))
+
+if (!has_tex) {
+  os <- Sys.info()[["sysname"]]
+  message("No LaTeX found → installing TinyTeX for ", os)
+  tinytex::install_tinytex()     # ~250 MB, 100 % automatic
+  message("Restart RStudio after installation finishes.")
+}
+
+
+```
+
+```{r}
+tinytex::install_tinytex()
+```
