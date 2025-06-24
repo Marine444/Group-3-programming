@@ -1,7 +1,8 @@
 install.packages("tidyverse")
 library(tidyverse)
+library(ggplot2)
 
-data <- read.csv("merge_2.csv")
+data = merge_2
 
 
 colnames(data) <- make.names(colnames(data))
@@ -29,8 +30,11 @@ ggplot() +
   scale_color_manual(values = c("California" = "blue", "Texas" = "green", "New York" = "red",
                                 "Florida" = "purple", "Illinois" = "orange", "Mean" = "black")) +
   labs(title = "Price-to-Income Ratio per State with National mean",
-       x = "year", y = "Ratio", color = "State") +
-  theme_minimal()
+       x = "Year", y = "Ratio", color = "State") +
+  theme_minimal() +
+  geom_vline(xintercept = 2008, linetype = "solid", color = "black") +
+  annotate("text" , x= 2008.7 , y = 22, size = 4.5, label = "Financial crisis\nhit")
+
 
 
 # ggsave("Temporal_Visualization.png", width = 10, height = 6)

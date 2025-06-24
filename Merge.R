@@ -22,15 +22,14 @@ income_long = income_to_use %>%
   ) 
 #Omitting the NA rows since we dont need 
 income_long_no_NA = na.omit(income_long)
-#Removing the extra "." so the States are the same 
+#Making the State titles the same 
 income_long_no_NA$State = income_long_no_NA$State %>%
-  str_replace_all("[.]", "")
-  str_squish () %>%
+  str_replace_all("[.]", "") %>%
+  str_squish() %>%
   str_trim()
 #Making the Year the same numeric class 
 hpi_filtered$Year = as.numeric(hpi_filtered$Year)
 income_long_no_NA$Year = as.numeric(income_long_no_NA$Year)
 #merging the 2 data sets
 merge_2 = inner_join(hpi_filtered , income_long_no_NA, by = c("State","Year"))
-
 
