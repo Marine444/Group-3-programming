@@ -36,7 +36,7 @@ Name of Tutor: Chantal Schouwenaar
 
 The 2008 Financial Crisis, commonly referred to as the Great Recession, originated in the U.S.  and lasted from late 2007 to mid-2009. It was a major social problem due to its severe effects on median household income and housing prices, which significantly undermined economic security for millions of Americans. The crisis was mainly caused by excessive household leverage, particularly within the subprime mortgage sector, which triggered a steep decline in housing prices and a wave of mortgage defaults (Mian & Sufi, 2010a). The housing market collapse diminished household wealth and reduced consumer spending, intensifying the recession’s severity and duration. 
 
-Mian and Sufi (2010a) demonstrate that households with higher leverage before the crisis faced substantially greater financial distress, leading to sharp reductions in durable consumption and higher unemployment rates at the county level. Furthermore, Morrissey et al. (2020) show that during the Great Recession, households with lower education levels, children, or without homeownership experienced significantly higher income and employment instability, an effect closely linked to increased financial hardship (pp. 3–4). Together, these economic and social disruptions illustrate why the Great Recession was not only a financial crisis but also a profound social crisis, affecting housing security, income stability, and overall well-being. 
+Mian and Sufi (2010a) demonstrate that households with higher leverage before the crisis faced substantially greater financial distress, leading to sharp reductions in durable consumption and higher unemployment rates at the country level. Furthermore, Morrissey et al. (2020) show that during the Great Recession, households with lower education levels, children, or without homeownership experienced significantly higher income and employment instability, an effect closely linked to increased financial hardship (pp. 3–4). Together, these economic and social disruptions illustrate why the Great Recession was not only a financial crisis but also a profound social crisis, affecting housing security, income stability, and overall well-being. 
 
 ## 1.2: What sources have identified this topic as a social problem?
 
@@ -142,7 +142,7 @@ These specific FHFA reports show the progression of U.S. housing conditions duri
 
 <!-- -->
 
--   **Format:** Excel (XLSX) 
+-   **Format:** Excel (XLS) 
 
 <!-- -->
 
@@ -430,7 +430,7 @@ ggplot(map_data_2010) +
 
 The map helps illustrate how the problem of declining housing affordability varied across American states between 2006 and 2010. By comparing the HPI before and after the 2008 financial crisis. States shaded in yellow or red were the least affordable. In contrast, states shown in shades of purple experienced more affordable housing during this period. 
 
-**Include a short description on how the visualization aligns with** 
+**Include a short description on how the visualization aligns with** [your topic]
 
 In 2006, several states of the western region, especially California, Washington, and Massachusetts, had very high HPI values, which indicates rapidly rising home prices. This growth surpassed income, contributing to a decline in housing affordability. 
 
