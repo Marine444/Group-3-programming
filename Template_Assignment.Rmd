@@ -649,8 +649,8 @@ if (!has_tex) {
   tinytex::install_tinytex()     # ~250 MB, 100 % automatic
   message("Restart RStudio after installation finishes.")
 }
-
-
+library(tinytex)
+library(renv)
 ```
 
 ```{r}
