@@ -1,6 +1,6 @@
 ---
 title: "2008 financial crisis in US and its impact on median income and housing prices."
-author: "Studentnames and studentnumbers here Marine Latour, Bryan Berlijn, Toine van Bakel, Tyfarah Wedervoort, Shruti Ramasamy, Naomi van Leuvensteijn, Rocco vitale
+author: " Bryan Berlijn (284091), Marine Latour (2853681),Naomi van Leuvensteijn (2813993),Rocco vitale(2860249), Shruti Ramasamy (2771013) Toine van Bakel(2854665), Tyfarah Wedervoort (2849888)
 "
 date: "`r Sys.Date()`"
 output: pdf_document
@@ -24,11 +24,11 @@ library(sf)
 
 # Title Page
 
-Include your names = "Marine Latour, Bryan Berlijn, Toine van Bakel, Tyfarah Wedervoort, Shruti Ramasamy, Naomi van Leuvensteijn, Rocco vitale"
+Bryan Berlijn, Marine Latour, Naomi van Leuvensteijn, Rocco vitale, Shruti Ramasamy, Toine van Bakel, Tyfarah Wedervoort
 
-Include the tutorial group number
+Tutorial 2, Group 3
 
-Include your tutorial lecturer's name
+Name of Tutor: Chantal Schouwenaar
 
 # Part 1: Problem Motivation & Literature
 
