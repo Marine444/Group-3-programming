@@ -216,7 +216,7 @@ merge_2 = inner_join(hpi_filtered , income_long_no_NA, by = c("State","Year"))
 
 ## 3.2 Generate necessary variables
 
-#### New variable 1: Housing price to income ratio. 
+#### New variable 1: Housing price to income ratio.
 
 Changes in this ratio over time would indicate whether housing prices are rising faster or slower than income. 
 
@@ -296,35 +296,213 @@ merge_2$link_price_to_income[merge_2$Year=="2006"] = "NA"
 
 ```
 
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+**How does the problem you’ve identified vary over time?** 
+
+The line graph indicates a higher price-to-income ratio in 2006, which declined over time. As the crisis progressed, the line graph illustrates that affordability improved, reflected by the decreasing or steady price-to-income ratio lines. 
+
+I**nclude a short description on how the visualization aligns with[your topic]:**
+
+As demonstrated in this line graph, the price-to-income ratio of several prominent American states is presented alongside the national mean. This analysis offers a clear indication that the crisis exerted a more significant impact in certain states compared to others. The states which had a higher ratio and experienced lower house affordability are California, New York and Florida. On the other hand, states with a lower ratio, experiencing higher house affordability are Illinois and Texas. 
+
 ## 3.4 Visualize spatial variation
 
 ```{r visualise_map}
-
+# mapping state names to STUPS
+state_abbr <- tibble::tibble(
+  State = state.name,
+  STUSPS = state.abb
+)
 ```
 
-Here you provide a description of why the plot above is relevant to your specific social problem.
+```{r}
+# Adding manually DC(District of Columbia)
+state_abbr <- bind_rows(state_abbr, tibble(State = "District of Columbia", STUSPS = "DC"))
+```
 
-## 3.5 Visualize sub-population variation
+```{r}
+# Adding abbreviations to the dataframe
+merge_2 <- merge_2 %>%
+  left_join(state_abbr, by = "State")
+```
 
-What is the poverty rate by state?
+```{r}
+# Retrieving US shapefiles and filtering
+states_sf <- states(cb = TRUE) %>%
+  filter(!STUSPS %in% c("PR", "VI", "GU", "MP", "AS")) %>%
+  st_transform(crs = 5070)
+```
 
-```{r visualise_subpopulations}
-dataset$inmetro <- dataset$inmetro %>% as.factor()
-# Boxplot of poverty rate by state using the 'midwest' dataset
-ggplot(dataset, aes(x = inmetro, y = percadultpoverty)) +
-  geom_boxplot() +
+```{r}
+# Merging shapefiles and data for all the years
+map_data <- left_join(states_sf, merge_2, by = "STUSPS")
+```
+
+```{r}
+#setting the limits for the scale of the heat map
+hpi_min <- min(map_data$HPI, na.rm = TRUE)
+hpi_max <- max(map_data$HPI, na.rm = TRUE)
+```
+
+```{r}
+# Filter for 2006
+map_data_2006 <- map_data %>% filter(Year == 2006)
+```
+
+```{r}
+# Plot 2006
+ggplot(map_data_2006) +
+  geom_sf(aes(fill = HPI), color = "white", size = 0.2) +
+  scale_fill_viridis(option = "plasma", na.value = "grey90", limits = c(hpi_min, hpi_max)) +
+  theme_minimal(base_size = 14) +
   labs(
-    title = "Distribution of Poverty Rates by Metropolitan status (Midwest counties)",
-    x = "Metropolitan Area",
-    y = "Poverty Rate of Adults (%)"
+    title = "House Price Index per state in US dollar ($) - 2006",
+    fill = "Housing Price \nIndex (HPI)"
   ) +
-  theme_minimal() +
   theme(
-    legend.position = "right"
+    legend.position = "right",
+    legend.title = element_text(size = 12)
   )
 ```
 
-Here you provide a description of why the plot above is relevant to your specific social problem.
+```{r}
+map_data_2010 <- map_data %>% filter(Year == 2010)
+
+# Plot 2010
+ggplot(map_data_2010) +
+  geom_sf(aes(fill = HPI), color = "white", size = 0.2) +
+  scale_fill_viridis(option = "plasma", na.value = "grey90", limits = c(hpi_min, hpi_max)) +
+  theme_minimal(base_size = 14) +
+  labs(
+    title = "House Price Index per state in US dollar ($) - 2010",
+    fill = "Housing Price \nIndex (HPI)"
+  ) +
+  theme(
+    legend.position = "right",
+    legend.title = element_text(size = 12)
+  )
+```
+
+**How does the problem you’ve identified geographically/spatially vary?**. 
+
+The map helps illustrate how the problem of declining housing affordability varied across American states between 2006 and 2010. By comparing the HPI before and after the 2008 financial crisis. States shaded in yellow or red were the least affordable. In contrast, states shown in shades of purple experienced more affordable housing during this period. 
+
+**Include a short description on how the visualization aligns with** 
+
+In 2006, several states of the western region, especially California, Washington, and Massachusetts, had very high HPI values, which indicates rapidly rising home prices. This growth surpassed income, contributing to a decline in housing affordability. 
+
+By 2010 the aftermath of the housing market crash is visible in many states due to a drop in HPI values, indicating a decline in home prices. This means that housing became more affordable, but due to economic distress. 
+
+**Think about how zoomed in or out the map is such that it fits the spread of location of your data** 
+
+Since our analysis focuses on state variation, using a state level map is the most appropriate. It provides a clear visualization of differences between states, allowing us to observe how the housing affordability problem and the impact of the 2008 financial crisis varied geographically. This scale perfectly fits the scope of our research by capturing the regional trends, making it easier to compare and visualize state-by-state changes in housing price.  
+
+## 3.5 Visualize sub-population variation
+
+```{r visualise_subpopulations}
+#divide by regions
+merge_2 <- merge_2 %>%
+  mutate(
+    region = case_when(
+      State %in% c(
+        # Combine Northeast + Midwest as North
+        "Maine", "New Hampshire", "Vermont", "Massachusetts", "Rhode Island", "Connecticut",
+        "New York", "New Jersey", "Pennsylvania",
+        "Ohio", "Indiana", "Illinois", "Michigan", "Wisconsin", "Minnesota", "Iowa", 
+        "Missouri", "North Dakota", "South Dakota", "Nebraska", "Kansas"
+      ) ~ "North",
+      
+      State %in% c(
+        # South
+        "Delaware", "Maryland", "District of Columbia", "Virginia", "West Virginia",
+        "North Carolina", "South Carolina", "Georgia", "Florida", "Kentucky", "Tennessee",
+        "Mississippi", "Alabama", "Texas", "Arkansas", "Louisiana", "Oklahoma"
+      ) ~ "South",
+      
+      State %in% c(
+        # West
+        "Montana", "Idaho", "Wyoming", "Colorado", "New Mexico", "Arizona", "Utah", "Nevada",
+        "California", "Oregon", "Washington", "Alaska", "Hawaii"
+      ) ~ "West",
+      
+      TRUE ~ "Other"
+    )
+  )
+
+```
+
+```{r}
+#Created the boxplot
+ggplot(merge_2, aes(x = region, y = price_to_income_ratio)) +
+  geom_boxplot() +
+  labs(
+    title = "Price-to-Income Ratio per Region",
+    x = "Region",
+    y = "Price-to-Income Ratio"
+  )
+```
+
+**Include a short description on how the visualization aligns with[your topic].** 
+
+The boxplot visualizes the distribution of the price-to-income ratio for U.S. states grouped by regions, namely North, South and West.  As visualized, the mean of the ratio for the western region being above 10, is higher than the other regions which are below 10. Also, the graph reveals the variability and presence of outliers. In the western region, the two outliers’ ratios go beyond 20, which shows that this region greatly suffered a lack of housing affordability. 
+
+### Fourth Graph
+
+#### Bar chart of Income and HPI change categories by region. 
+
+```{r}
+# Make sure Year is numeric
+merge_2 <- merge_2 %>%
+  mutate(Year = as.numeric(Year))
+```
+
+```{r}
+# Filter for 2008
+merge_2_filtered <- merge_2 %>%
+  filter(Year == 2008)
+```
+
+```{r}
+# Summarize counts + compute percentages within each region
+summary_data <- merge_2_filtered %>%
+  group_by(region, link_price_to_income) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(region) %>%
+  mutate(percent = count / sum(count) * 100) %>%
+  ungroup()
+```
+
+```{r}
+# Plot
+ggplot(summary_data, aes(x = region, y = percent, fill = link_price_to_income)) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.8)) +
+  labs(
+    title = "Income & HPI change categories by region (2008)",
+    x = "region",
+    y = "Percentage of cases",
+    fill = "Category"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom"
+  )
+```
+
+**Include a short description on how the visualization aligns with[your topic].**
+
+The bar chart illustrates the role of the wealth effect during the financial crisis. It is constructed by using the second variable, which examines the link between changes in income and house price for the year 2008. This graph groups the states into 3 regions: North, South and West. As shown, during the peak of the crisis, the Western region experienced a stronger negative wealth effect, because most states experienced a fall in both variables. In contrast, the Northern region had a lower percentage of states experience “Both Fell”. Instead, a larger share of states experienced the income change variable to either increased or remained stable. 
 
 ## 3.6 Event analysis
 
