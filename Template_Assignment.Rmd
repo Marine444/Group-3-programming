@@ -1,7 +1,7 @@
 ---
 title: "2008 financial crisis in US and its impact on median income and housing prices."
 author: " Bryan Berlijn (284091), Marine Latour (2853681),
-Naomi van Leuvensteijn (2813993),Rocco vitale(2860249),\n
+Naomi van Leuvensteijn (2813993),\n Rocco vitale(2860249),\n
 Shruti Ramasamy (2771013), Toine van Bakel(2854665), 
 Tyfarah Wedervoort (2849888)
 "
@@ -519,7 +519,7 @@ summary_data <- merge_2_filtered %>%
   ungroup()
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.width=7, fig.height=5}
 # Plot
 ggplot(summary_data, aes(x = region, y = percent, fill = link_price_to_income)) +
   geom_bar(stat = "identity", position = position_dodge(width = 0.8)) +
