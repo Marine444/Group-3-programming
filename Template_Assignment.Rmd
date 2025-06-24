@@ -160,6 +160,7 @@ The datasets are complementary as they both revolve around an important asset, n
 # Part 3 - Quantifying
 
 ## 3.1 Data cleaning
+
 ```{r}
 #Changing both data sets to data frame 
 tabn025 = as.data.frame(tabn025)
@@ -174,12 +175,10 @@ hpi_filtered = hpi_at_state %>%
 
 ```
 
-
 ```{r}
 #Filtering the Income data set for 2006-2010
 income_to_use = select(tabn025,State,"2006","2007","2008","2009","2010")
 ```
-
 
 ```{r}
 #Formatting the income data set into a long format
@@ -191,12 +190,10 @@ income_long = income_to_use %>%
   ) 
 ```
 
-
 ```{r}
 #Omitting the NA rows since we dont need 
 income_long_no_NA = na.omit(income_long)
 ```
-
 
 ```{r}
 #Making the State titles the same 
@@ -212,27 +209,85 @@ hpi_filtered$Year = as.numeric(hpi_filtered$Year)
 income_long_no_NA$Year = as.numeric(income_long_no_NA$Year)
 ```
 
-
-
 ```{r}
 #merging the 2 data sets
 merge_2 = inner_join(hpi_filtered , income_long_no_NA, by = c("State","Year"))
 ```
 
-
-
 ## 3.2 Generate necessary variables
 
-Variable 1
+#### New variable 1: Housing price to income ratio. 
+
+Changes in this ratio over time would indicate whether housing prices are rising faster or slower than income. 
+
+**Housing Price to Income Ratio**= House Price Index Value / Median Household Income Value 
+
+**Why the creation of this variable is informative and useful for your analyses?**
+
+We used this ratio to measure the affordability of housing in each state by comparing housing prices to household income. A rising ratio means less affordable housing, while a lower ratio suggests more affordability. We observed that before the 2008 financial crisis, the price_to_income_ratio behaved differently for each state.  \
+The creation of this variable combines the HPI, the income into one indicator as well as data on individual states. Therefore, the variable assesses a household’s financial situation, differences in economic and social conditions across different geographic areas or regions, and the recovery post-crisis.  
+
+ \
+**What you intend to analyse/visualize using this variable?** 
+
+With our new variable, we can visualize a Price- Income divergence. This enables us to look at whether house prices increase faster than the median household incomes. In an economy functioning normally, house prices and income are steadily increasing together. Thus, the ratio will be lower in a normal economy. However, house prices can increase faster than incomes which was common in many states before the crisis of 2008. This was because of expectations about future prices for houses. Moreover, the new variable helps to evaluate which states were better off and which ones were worse off in terms of housing affordability in the midst of the crisis. 
 
 ```{r gen_var1}
+#create variable 1: house prices to income ratio
+merge_2 <- merge_2 %>%
+  mutate(price_to_income_ratio = (HPI / Income)*1000)
+```
+
+#### New variable 2: Link between the housing prices and income value. 
+
+This link explains the wealth effect and how falling property value led to lower spending and thus lower incomes. 
+
+**Link between income value and house price:** link between housing price change (HPIt-HPIt-1 ) and income value change (Incomet-Incomet-1 ) , where t= year. 
+
+**Why the creation of this variable is informative and useful for your analyses?** 
+
+As explained earlier, our report evaluates whether the wealth effect had an impact in the 2008 U.S. financial crisis. This direct relationship between the income value change and the housing prices change helps to analyse whether a drop in housing prices led to a fall in the income value. 
+
+**What you intend to analyse/visualize using this variable?** 
+
+We created a new column called link_price_to_income, which labels the relationship between changes in income and housing prices using characters such as “Both Fell”, “Income fell, HPI increased”, “Income stable, HPI fell”, “Income stable, HPI increased”, “Income increased, HPI fell”, “Income increased, HPI increased”. This allows us to directly visualize the link between two variables more easily, for example, we can identify which states experienced “Both fell” during the financial crisis, this helps to establish a direct correlation between the two variables, indicating that the wealth effect worsened the crisis. In this context, the new variable shows how the connection between the two directly contributed to economic and social hardships. 
+
+```{r gen_var2}
+# create new variable of income_change and HPI_change
+
+merge_2 <- merge_2 %>%
+  arrange(State, Year) %>%  # ensure data is ordered
+  group_by(State) %>%      # compute changes within each state
+  mutate(
+    income_change = Income - lag(Income),
+    HPI_change = HPI - lag(HPI)
+  ) %>%
+  ungroup()
 
 ```
 
-Variable 2
+```{r gen_var2}
+#create variable 2: link between income loss & housing price drop 
+
+merge_2 <- merge_2 %>%
+  mutate(
+    link_price_to_income = case_when(
+      income_change < 0 & `HPI_change` < 0  ~ "Both fell",
+      income_change < 0 & `HPI_change` > 0 ~ "Income fell, HPI increased",
+      income_change == 0 & `HPI_change` < 0 ~ "Income stable, HPI fell",
+      income_change == 0 & `HPI_change` > 0 ~ "Income stable, HPI increased",
+      income_change > 0 & `HPI_change` < 0 ~ "Income increased, HPI fell",
+      income_change > 0 & `HPI_change` > 0 ~ "Income increased, HPI increased",
+      TRUE ~ "Other"
+    )
+  )
+```
 
 ```{r gen_var2}
+#describing missing data for 2006 as NAs 
+merge_2$link_price_to_income[merge_2$Year=="2006"] = "NA"
 
+merge_2$link_price_to_income[merge_2$Year=="2006"] = "NA"
 ```
 
 ## 3.3 Visualize temporal variation
