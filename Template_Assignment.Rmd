@@ -1,6 +1,9 @@
 ---
 title: "2008 financial crisis in US and its impact on median income and housing prices."
-author: " Bryan Berlijn (284091), Marine Latour (2853681),Naomi van Leuvensteijn (2813993),Rocco vitale(2860249), Shruti Ramasamy (2771013), Toine van Bakel(2854665), Tyfarah Wedervoort (2849888)
+author: " Bryan Berlijn (284091), Marine Latour (2853681),
+Naomi van Leuvensteijn (2813993),Rocco vitale(2860249),\n
+Shruti Ramasamy (2771013), Toine van Bakel(2854665), 
+Tyfarah Wedervoort (2849888)
 "
 date: "`r Sys.Date()`"
 output: pdf_document
@@ -8,11 +11,11 @@ output: pdf_document
 
 # Set-up your environment
 
-```{r package_install, include=FALSE}
+```{r package_install, include=FALSE, echo=FALSE}
 install.packages(c("ggplot2","tidyverse", "dplyr", "sf", "tigris", "viridis"))
 ```
 
-```{r packages}
+```{r packages, echo=FALSE}
 library(tidyverse)
 library(readr)
 library(dplyr)
@@ -168,13 +171,13 @@ The datasets are complementary as they both revolve around an important asset, n
 
 ## 3.1 Data cleaning
 
-```{r}
+```{r, echo=FALSE}
 #Changing both data sets to data frame 
 tabn025 = as.data.frame(tabn025)
 hpi_at_state = as.data.frame(hpi_at_state)
 ```
 
-```{r}
+```{r, echo=FALSE}
 #Filtering the HPI dataset for 20006-2010 
 hpi_filtered = hpi_at_state %>%
   filter(Year %in% c(2006,2007,2008,2009,2010)) %>%
@@ -182,12 +185,12 @@ hpi_filtered = hpi_at_state %>%
 
 ```
 
-```{r}
+```{r,echo=FALSE}
 #Filtering the Income data set for 2006-2010
 income_to_use = select(tabn025,State,"2006","2007","2008","2009","2010")
 ```
 
-```{r}
+```{r, echo=FALSE}
 #Formatting the income data set into a long format
 income_long = income_to_use %>%
   pivot_longer(
@@ -197,12 +200,12 @@ income_long = income_to_use %>%
   ) 
 ```
 
-```{r}
+```{r, echo=FALSE}
 #Omitting the NA rows since we dont need 
 income_long_no_NA = na.omit(income_long)
 ```
 
-```{r}
+```{r,echo=FALSE}
 #Making the State titles the same 
 income_long_no_NA$State = income_long_no_NA$State %>%
   str_replace_all("[.]", "") %>%
@@ -210,13 +213,13 @@ income_long_no_NA$State = income_long_no_NA$State %>%
   str_trim()
 ```
 
-```{r}
+```{r, echo=FALSE}
 #Making the Year the same numeric class 
 hpi_filtered$Year = as.numeric(hpi_filtered$Year)
 income_long_no_NA$Year = as.numeric(income_long_no_NA$Year)
 ```
 
-```{r}
+```{r,echo=FALSE}
 #merging the 2 data sets
 merge_2 = inner_join(hpi_filtered , income_long_no_NA, by = c("State","Year"))
 ```
@@ -259,7 +262,7 @@ As explained earlier, our report evaluates whether the wealth effect had an impa
 
 We created a new column called link_price_to_income, which labels the relationship between changes in income and housing prices using characters such as “Both Fell”, “Income fell, HPI increased”, “Income stable, HPI fell”, “Income stable, HPI increased”, “Income increased, HPI fell”, “Income increased, HPI increased”. This allows us to directly visualize the link between two variables more easily, for example, we can identify which states experienced “Both fell” during the financial crisis, this helps to establish a direct correlation between the two variables, indicating that the wealth effect worsened the crisis. In this context, the new variable shows how the connection between the two directly contributed to economic and social hardships. 
 
-```{r}
+```{r, echo=FALSE}
 # create new variable of income_change and HPI_change
 
 merge_2 <- merge_2 %>%
@@ -293,35 +296,35 @@ merge_2$link_price_to_income[merge_2$Year=="2006"] = "NA"
 
 ## 3.3 Visualize temporal variation
 
-```{r}
+```{r, echo=FALSE}
 #Rename merge_2 as data
 data = merge_2
 ```
 
-```{r}
+```{r, echo=FALSE}
 #Rename columns as necessary
 colnames(data) <- make.names(colnames(data))
 ```
 
-```{r}
+```{r, echo=FALSE}
 #Make the year become an integer
 data$Year <- as.integer(data$Year)
 ```
 
-```{r}
+```{r, echo=FALSE}
 #Select only necessary columns
 plot_data <- data %>%
   select(State, Year, price_to_income_ratio)
 ```
 
-```{r}
+```{r, echo=FALSE}
 #Calculate average for all states per year
 average_data <- plot_data %>%
   group_by(Year) %>%
   summarise(avg_ratio = mean(price_to_income_ratio, na.rm = TRUE))
 ```
 
-```{r}
+```{r, echo=FALSE}
 #Filter data for top states
 top_states <- c("California", "Texas", "New York", "Florida","Illinois")
 
@@ -329,11 +332,11 @@ filtered_data <- plot_data %>%
   filter(State %in% top_states)
 ```
 
-```{r}
+```{r, echo=FALSE}
 #Create the line graph
 ggplot() +
-  geom_line(data = filtered_data, aes(x = Year, y = price_to_income_ratio, color = State), size = 1.2) +
-  geom_line(data = average_data, aes(x = Year, y = avg_ratio, color = "Mean"), size = 1.3, linetype = "dashed") +
+  geom_line(data = filtered_data, aes(x = Year, y = price_to_income_ratio, color = State), linewidth = 1.2) +
+  geom_line(data = average_data, aes(x = Year, y = avg_ratio, color = "Mean"), linewidth = 1.3, linetype = "dashed") +
   scale_color_manual(values = c("California" = "blue", "Texas" = "green", "New York" = "red",
                                 "Florida" = "purple", "Illinois" = "orange", "Mean" = "black")) +
   labs(title = "Price-to-Income Ratio per State with National mean",
@@ -351,7 +354,7 @@ As demonstrated in this line graph, the price-to-income ratio of several promine
 
 ## 3.4 Visualize spatial variation
 
-```{r visualise_map}
+```{r visualise_map, echo=FALSE}
 # mapping state names to STUPS
 state_abbr <- tibble::tibble(
   State = state.name,
@@ -359,41 +362,41 @@ state_abbr <- tibble::tibble(
 )
 ```
 
-```{r}
+```{r, echo=FALSE}
 # Adding manually DC(District of Columbia)
 state_abbr <- bind_rows(state_abbr, tibble(State = "District of Columbia", STUSPS = "DC"))
 ```
 
-```{r}
+```{r, echo=FALSE}
 # Adding abbreviations to the dataframe
 merge_2 <- merge_2 %>%
   left_join(state_abbr, by = "State")
 ```
 
-```{r}
+```{r, echo=FALSE}
 # Retrieving US shapefiles and filtering
 states_sf <- states(cb = TRUE) %>%
   filter(!STUSPS %in% c("PR", "VI", "GU", "MP", "AS")) %>%
   st_transform(crs = 5070)
 ```
 
-```{r}
+```{r, echo=FALSE}
 # Merging shapefiles and data for all the years
 map_data <- left_join(states_sf, merge_2, by = "STUSPS")
 ```
 
-```{r}
+```{r, echo=FALSE}
 #setting the limits for the scale of the heat map
 hpi_min <- min(map_data$HPI, na.rm = TRUE)
 hpi_max <- max(map_data$HPI, na.rm = TRUE)
 ```
 
-```{r}
+```{r, echo=FALSE}
 # Filter for 2006
 map_data_2006 <- map_data %>% filter(Year == 2006)
 ```
 
-```{r}
+```{r, echo=FALSE}
 # Plot 2006
 ggplot(map_data_2006) +
   geom_sf(aes(fill = HPI), color = "white", size = 0.2) +
@@ -409,7 +412,7 @@ ggplot(map_data_2006) +
   )
 ```
 
-```{r}
+```{r,echo=FALSE}
 map_data_2010 <- map_data %>% filter(Year == 2010)
 
 # Plot 2010
@@ -443,7 +446,7 @@ Since our analysis focuses on state variation, using a state level map is the m
 
 ## 3.5 Visualize sub-population variation 1
 
-```{r visualise_subpopulations}
+```{r visualise_subpopulations, echo=FALSE}
 #divide by regions
 merge_2 <- merge_2 %>%
   mutate(
@@ -475,7 +478,7 @@ merge_2 <- merge_2 %>%
 
 ```
 
-```{r}
+```{r, echo=FALSE}
 #Created the boxplot
 ggplot(merge_2, aes(x = region, y = price_to_income_ratio)) +
   geom_boxplot() +
@@ -494,19 +497,19 @@ The boxplot visualizes the distribution of the price-to-income ratio for U.S. st
 
 #### Bar chart of Income and HPI change categories by region. 
 
-```{r}
+```{r, echo=FALSE}
 # Make sure Year is numeric
 merge_2 <- merge_2 %>%
   mutate(Year = as.numeric(Year))
 ```
 
-```{r}
+```{r, echo=FALSE}
 # Filter for 2008
 merge_2_filtered <- merge_2 %>%
   filter(Year == 2008)
 ```
 
-```{r}
+```{r, echo=FALSE}
 # Summarize counts + compute percentages within each region
 summary_data <- merge_2_filtered %>%
   group_by(region, link_price_to_income) %>%
@@ -516,7 +519,7 @@ summary_data <- merge_2_filtered %>%
   ungroup()
 ```
 
-```{r}
+```{r, echo=FALSE}
 # Plot
 ggplot(summary_data, aes(x = region, y = percent, fill = link_price_to_income)) +
   geom_bar(stat = "identity", position = position_dodge(width = 0.8)) +
@@ -539,41 +542,41 @@ The bar chart illustrates the role of the wealth effect during the financial c
 
 ## 3.6 Event analysis
 
-```{r}
+```{r, echo=FALSE}
 #Rename merge_2 as data
 data = merge_2
 ```
 
-```{r}
+```{r, echo=FALSE}
 #Rename columns as necessary
 colnames(data) <- make.names(colnames(data))
 ```
 
-```{r}
+```{r, echo=FALSE}
 #Make the year become an integer
 data$Year <- as.integer(data$Year)
 ```
 
-```{r}
+```{r, echo=FALSE}
 #Select only necessary columns
 plot_data <- data %>%
   select(State, Year, price_to_income_ratio)
 ```
 
-```{r}
+```{r, echo=FALSE}
 #Calculate average for all states per year
 average_data <- plot_data %>%
   group_by(Year) %>%
   summarise(avg_ratio = mean(price_to_income_ratio, na.rm = TRUE))
 ```
 
-```{r}
+```{r, echo=FALSE}
 #Filter data for top states
 filtered_data <- plot_data %>%
   filter(State %in% top_states)
 ```
 
-```{r analysis}
+```{r analysis, echo=FALSE}
 #Create the line graph with the vertical line representing the event analysis
 ggplot() +
   geom_line(data = filtered_data, aes(x = Year, y = price_to_income_ratio, color = State), size = 1.2) +
@@ -623,12 +626,12 @@ Public Repository Link : <https://github.com/Marine444/Group-3-programming>
 
 6.  U.S. Federal Housing. (2025). *“HPI for states (All – Transactions Index): Experimental Indexes Showing Cumulative (Nominal) Annual Appreciation”.*   <https://www.fhfa.gov/hpi/download/annual/hpi_at_state.xlsx> 
 
-```{r}
+```{r, echo=FALSE}
 setwd("C:/Users/tyfar/OneDrive/Desktop/school/programming/Group-3-programming")
 
 ```
 
-```{r}
+```{r, echo=FALSE}
 install.packages(c("renv", "tinytex"))
 
 # 1. restore the exact package versions used by the course
