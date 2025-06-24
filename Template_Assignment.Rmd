@@ -293,19 +293,49 @@ merge_2$link_price_to_income[merge_2$Year=="2006"] = "NA"
 ## 3.3 Visualize temporal variation
 
 ```{r}
-
+#Rename merge_2 as data
+data = merge_2
 ```
 
 ```{r}
-
+#Rename columns as necessary
+colnames(data) <- make.names(colnames(data))
 ```
 
 ```{r}
-
+#Make the year become an integer
+data$Year <- as.integer(data$Year)
 ```
 
 ```{r}
+#Select only necessary columns
+plot_data <- data %>%
+  select(State, Year, price_to_income_ratio)
+```
 
+```{r}
+#Calculate average for all states per year
+average_data <- plot_data %>%
+  group_by(Year) %>%
+  summarise(avg_ratio = mean(price_to_income_ratio, na.rm = TRUE))
+```
+
+```{r}
+#Filter data for top states
+filtered_data <- plot_data %>%
+  filter(State %in% top_states)
+```
+
+```{r}
+#Create the line graph
+ggplot() +
+  geom_line(data = filtered_data, aes(x = Year, y = price_to_income_ratio, color = State), size = 1.2) +
+  geom_line(data = average_data, aes(x = Year, y = avg_ratio, color = "Mean"), size = 1.3, linetype = "dashed") +
+  scale_color_manual(values = c("California" = "blue", "Texas" = "green", "New York" = "red",
+                                "Florida" = "purple", "Illinois" = "orange", "Mean" = "black")) +
+  labs(title = "Price-to-Income Ratio per State with National mean",
+       x = "Year", y = "Ratio", color = "State") +
+  theme_minimal()
 ```
 
 **How does the problem you’ve identified vary over time?** 
@@ -408,7 +438,7 @@ By 2010 the aftermath of the housing market crash is visible in many states due 
 
 Since our analysis focuses on state variation, using a state level map is the most appropriate. It provides a clear visualization of differences between states, allowing us to observe how the housing affordability problem and the impact of the 2008 financial crisis varied geographically. This scale perfectly fits the scope of our research by capturing the regional trends, making it easier to compare and visualize state-by-state changes in housing price.  
 
-## 3.5 Visualize sub-population variation
+## 3.5 Visualize sub-population variation 1
 
 ```{r visualise_subpopulations}
 #divide by regions
@@ -457,7 +487,7 @@ ggplot(merge_2, aes(x = region, y = price_to_income_ratio)) +
 
 The boxplot visualizes the distribution of the price-to-income ratio for U.S. states grouped by regions, namely North, South and West.  As visualized, the mean of the ratio for the western region being above 10, is higher than the other regions which are below 10. Also, the graph reveals the variability and presence of outliers. In the western region, the two outliers’ ratios go beyond 20, which shows that this region greatly suffered a lack of housing affordability. 
 
-### Fourth Graph
+## Visualize sub-population variation 2
 
 #### Bar chart of Income and HPI change categories by region. 
 
@@ -506,13 +536,57 @@ The bar chart illustrates the role of the wealth effect during the financial c
 
 ## 3.6 Event analysis
 
-Analyze the relationship between two variables.
+```{r}
+#Rename merge_2 as data
+data = merge_2
+```
+
+```{r}
+#Rename columns as necessary
+colnames(data) <- make.names(colnames(data))
+```
+
+```{r}
+#Make the year become an integer
+data$Year <- as.integer(data$Year)
+```
+
+```{r}
+#Select only necessary columns
+plot_data <- data %>%
+  select(State, Year, price_to_income_ratio)
+```
+
+```{r}
+#Calculate average for all states per year
+average_data <- plot_data %>%
+  group_by(Year) %>%
+  summarise(avg_ratio = mean(price_to_income_ratio, na.rm = TRUE))
+```
+
+```{r}
+#Filter data for top states
+filtered_data <- plot_data %>%
+  filter(State %in% top_states)
+```
 
 ```{r analysis}
-
+#Create the line graph with the vertical line representing the event analysis
+ggplot() +
+  geom_line(data = filtered_data, aes(x = Year, y = price_to_income_ratio, color = State), size = 1.2) +
+  geom_line(data = average_data, aes(x = Year, y = avg_ratio, color = "Mean"), size = 1.3, linetype = "dashed") +
+  scale_color_manual(values = c("California" = "blue", "Texas" = "green", "New York" = "red",
+                                "Florida" = "purple", "Illinois" = "orange", "Mean" = "black")) +
+  labs(title = "Price-to-Income Ratio per State with National mean",
+       x = "Year", y = "Ratio", color = "State") +
+  theme_minimal()
+  geom_vline(xintercept = 2008, linetype = "solid", color = "black") +
+  annotate("text" , x= 2008.7 , y = 22, size = 4.5, label = "Financial crisis\nhit")
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
+
+Although we studied the income and price changes and the relationship between them during the years of 2006-2010, the focus point throughout this report is 2008. The vertical line which is added to the temporal visualization at 2008 marks the peak of the financial crisis. It acts as a reference point to compare housing affordability trends before and after the economic collapse.   
 
 # Part 4 - Discussion
 
@@ -522,7 +596,7 @@ Here you provide a description of why the plot above is relevant to your specifi
 
 ## 5.1 Github repository link
 
-Provide the link to your PUBLIC repository here: ...
+Public Repository Link : <https://github.com/Marine444/Group-3-programming>
 
 ## 5.2 Reference list
 
