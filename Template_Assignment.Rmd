@@ -592,6 +592,8 @@ Although we studied the income and price changes and the relationship between th
 
 ## 4.1 Discuss your findings
 
+Our analysis of the 2008 financial crisis shows that pre-crisis the house prices were increasing but then fell during and post the recession. This aligns with the negative wealth effect we studied as a key factor worsening the crisis. Our study also concluded that the regional differences were an additional factor that explained differences in the intensity of the consequences of the crisis. For instance, California was concluded to be the leading state of the Western region in being the most affected. This is illustrated by the line graph and the second variable where its price-to-income ratio dropped significantly during the crisis. This is also shown by the heatmap where its 2006 HPI was high pre-crisis but then dropped post-crisis. In conclusion, the crisis' effects were amplified by a combination of housing dynamics and regional disparities.
+
 # Part 5 - Reproducibility
 
 ## 5.1 Github repository link
@@ -599,5 +601,3 @@ Although we studied the income and price changes and the relationship between th
 Public Repository Link : <https://github.com/Marine444/Group-3-programming>
 
 ## 5.2 Reference list
-
-Use APA referencing throughout your document.
