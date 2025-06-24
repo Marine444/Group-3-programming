@@ -57,30 +57,125 @@ This report creates a merged, state-level dataset to analyze income and housing 
 Preferably from a URL, but if not, make sure to download the data and store it in a shared location that you can load the data in from. Do not store the data in a folder you include in the Github repository!
 
 ```{r loading_data}
-dataset <- midwest
+hpi_data_set = https://www.fhfa.gov/hpi/download/annual/hpi_at_state.xlsx
+income_per_state = https://nces.ed.gov/programs/digest/d11/tables/xls/tabn025.xls
 ```
-
-midwest is an example dataset included in the tidyverse package
 
 ## 2.2 Provide a short summary of the dataset(s)
 
 ```{r}
-head(dataset)
+head(hpi_at_state)
+head(tabn025)
 ```
 
-In this case we see 28 variables, but we miss some information on what units they are in. We also don't know anything about the year/moment in which this data has been captured.
+This first dataset, published by the **Federal Housing Finance Agency (FHFA)**, provides yearly data on house price trends across all American States using the House Price Index (HPI). The HPI measures changes in single-family home prices over time, constructed using repeat-sales data and financed through mortgages backed by Fannie Mae and Freddie Mac. The repeat-sales methodology enhances accuracy by tracking price changes for the same properties over time.
 
-These are things that are usually included in the metadata of the dataset. For your project, you need to provide us with the information from your metadata that we need to understand your dataset of choice.
+The second dataset, published by the **National Center for Education Statistics** (NCES), provides annual median household income data for the United States and the individual states. It offers insights into the economic conditions of each state over a specific period.
 
 ## 2.3 Describe the type of variables included
 
-Think of things like:
+### Housing Price Index Dataset
 
--   Do the variables contain health information or SES information?
+**Credibility:** FHFA is a U.S. federal agency responsible for regulating the housing finance system. Its data is trusted by researchers, policymakers, and financial institutions due to its transparency, government oversight, and long historical coverage. 
 
--   Have they been measured by interviewing individuals or is the data coming from administrative sources?
+**Metadata Overview** 
 
-*For the sake of this example, I will continue with the assignment...*
+-   **Frequency:** Annually 
+
+<!-- -->
+
+-   **Time Range:** This covers from 1975 to 2024, but our focus point is 2008  
+
+<!-- -->
+
+-   **Geographic Scope:** States 
+
+<!-- -->
+
+-   **Key Variables:** 
+
+<!-- -->
+
+-   **Purchase-Only Index** (focuses on purchase transactions only) 
+
+<!-- -->
+
+-   **All-Transactions Index** (includes both purchases and refinances mortgages) 
+
+<!-- -->
+
+-   **Percent Changes** (year-over-year growth) 
+
+<!-- -->
+
+-   **Seasonally Adjusted & Not Seasonally Adjusted values** 
+
+<!-- -->
+
+-   **Format:** Excel report (XLSX) 
+
+**Why This Data is Suitable for the Topic** 
+
+These specific FHFA reports show the progression of U.S. housing conditions during and before the period of financial crisis. They offer reliable, government-backed data with consistent methodology dating back to 1975. The breakdown by state level allows for a better understanding of how different regions were impacted by the price change. Its focus on repeat-sales ensures accurate tracking of real home price changes over time, making it well-suited for studying the dynamics of the housing market crisis. 
+
+**Data Limitations** 
+
+1.  **Market Coverage Gaps:** Excludes cash sales and jumbo loans, potentially underrepresenting luxury and investor markets, as well as homes not financed through Fannie Mae or Freddie Mac. 
+
+<!-- -->
+
+2.  **Limited detail within reports:** While the reports provide detailed price index, they do not contain demographic, income, or specific housing type data, limiting deeper analysis. 
+
+### Income Dataset
+
+**Credibility:** The NCES is the primary federal unit responsible for collecting and analysing data related to U.S. Department of Education, which makes this data highly reliable, objective, and a source of authority for economic statistics. 
+
+**Metadata Overview** 
+
+-   **Frequency:** Annually  
+
+<!-- -->
+
+-   **Time range:** Covers 1990, 2005-2010, but our focus point is 2008 
+
+<!-- -->
+
+-   **Geographic scope:** National (United States) and all U.S. States 
+
+<!-- -->
+
+-   **Key Variables:** 
+
+<!-- -->
+
+-   Median household income 
+
+<!-- -->
+
+-   Margin of error for estimates 
+
+<!-- -->
+
+-   **Format:** Excel (XLSX) 
+
+<!-- -->
+
+-   **Income adjustment:** All income values are expressed in 2010 dollars 
+
+ 
+
+**Why This Data is Suitable for the Topic?** \
+This dataset provides a clear and direct view of the median household income trends at state level in America over time, including periods of economic change. It can be used to observe income differences between states and the economic well-being of households. The breakdown by state level allows for a better understanding of how different regions were impacted by the economic crisis. 
+
+**Discuss data limitations** 
+
+1\. **Limited income detail:** The table provides median household income, but does not break it down by demographic characteristics, for example, race, age or educational attainment. 
+
+2\. **Limited methodology used**: The data provided lacks indication about the survey methods used and inflation adjustments. For instance, it might be possible that certain states used different survey methods than others, making it difficult to accurately portray differences in cost of living among them. 
+
+**Explain how these 2 datasets are different or complementary** 
+
+The datasets are complementary as they both revolve around an important asset, namely housing, while offering state-level data across multiple years. The FHFA dataset provides insight into housing prices, reflecting the market value of a household’s asset, while the NCES dataset provides information on median income which is a critical factor which influences a household’s ability to afford housing, whether through mortgage payments, rent, or homeownership costs. The connection between the two datasets lies in the fact that income determines a household’s ability to purchase or maintain housing. Conversely, fluctuations in housing prices can influence median income level through the wealth effect.  
 
 # Part 3 - Quantifying
 
