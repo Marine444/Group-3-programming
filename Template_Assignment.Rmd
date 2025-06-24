@@ -259,7 +259,7 @@ As explained earlier, our report evaluates whether the wealth effect had an impa
 
 We created a new column called link_price_to_income, which labels the relationship between changes in income and housing prices using characters such as “Both Fell”, “Income fell, HPI increased”, “Income stable, HPI fell”, “Income stable, HPI increased”, “Income increased, HPI fell”, “Income increased, HPI increased”. This allows us to directly visualize the link between two variables more easily, for example, we can identify which states experienced “Both fell” during the financial crisis, this helps to establish a direct correlation between the two variables, indicating that the wealth effect worsened the crisis. In this context, the new variable shows how the connection between the two directly contributed to economic and social hardships. 
 
-```{r gen_var2}
+```{r}
 # create new variable of income_change and HPI_change
 
 merge_2 <- merge_2 %>%
@@ -271,9 +271,6 @@ merge_2 <- merge_2 %>%
   ) %>%
   ungroup()
 
-```
-
-```{r gen_var2}
 #create variable 2: link between income loss & housing price drop 
 
 merge_2 <- merge_2 %>%
@@ -288,9 +285,6 @@ merge_2 <- merge_2 %>%
       TRUE ~ "Other"
     )
   )
-```
-
-```{r gen_var2}
 #describing missing data for 2006 as NAs 
 merge_2$link_price_to_income[merge_2$Year=="2006"] = "NA"
 
@@ -329,6 +323,8 @@ average_data <- plot_data %>%
 
 ```{r}
 #Filter data for top states
+top_states <- c("California", "Texas", "New York", "Florida","Illinois")
+
 filtered_data <- plot_data %>%
   filter(State %in% top_states)
 ```
@@ -586,7 +582,7 @@ ggplot() +
                                 "Florida" = "purple", "Illinois" = "orange", "Mean" = "black")) +
   labs(title = "Price-to-Income Ratio per State with National mean",
        x = "Year", y = "Ratio", color = "State") +
-  theme_minimal()
+  theme_minimal() +
   geom_vline(xintercept = 2008, linetype = "solid", color = "black") +
   annotate("text" , x= 2008.7 , y = 22, size = 4.5, label = "Financial crisis\nhit")
 ```
@@ -627,8 +623,6 @@ Public Repository Link : <https://github.com/Marine444/Group-3-programming>
 
 6.  U.S. Federal Housing. (2025). *“HPI for states (All – Transactions Index): Experimental Indexes Showing Cumulative (Nominal) Annual Appreciation”.*   <https://www.fhfa.gov/hpi/download/annual/hpi_at_state.xlsx> 
 
-"
-
 ```{r}
 setwd("C:/Users/tyfar/OneDrive/Desktop/school/programming/Group-3-programming")
 
@@ -651,8 +645,5 @@ if (!has_tex) {
 }
 library(tinytex)
 library(renv)
-```
 
-```{r}
-tinytex::install_tinytex()
 ```
