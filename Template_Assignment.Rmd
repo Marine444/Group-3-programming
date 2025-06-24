@@ -519,7 +519,7 @@ summary_data <- merge_2_filtered %>%
   ungroup()
 ```
 
-```{r, echo=FALSE, fig.width=7, fig.height=5}
+```{r, echo=FALSE, fig.width=7, fig.height=5, out.width='7in' }
 # Plot
 ggplot(summary_data, aes(x = region, y = percent, fill = link_price_to_income)) +
   geom_bar(stat = "identity", position = position_dodge(width = 0.8)) +
